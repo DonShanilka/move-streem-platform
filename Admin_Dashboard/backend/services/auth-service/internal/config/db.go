@@ -1,24 +1,36 @@
-package config
+package database
 
 import (
-    "context"
-    "log"
-    "time"
-    "go.mongodb.org/mongo-driver/mongo"
-    "go.mongodb.org/mongo-driver/mongo/options"
+	"context"
+	"log"
+	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var DB *mongo.Client
+var Client *mongo.Client
 
-func ConnectDB() {
-    client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
-    if err != nil { log.Fatal(err) }
+func Connect(uri string) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatal("MongoDB connection error:", err)
+	}
 
-    err = client.Connect(ctx)
-    if err != nil { log.Fatal(err) }
+	if err := client.Ping(ctx, nil); err != nil {
+		log.Fatal("MongoDB ping error:", err)
+	}
 
-    DB = client
+	Client = client
+	log.Println("MongoDB connected")
+}
+
+func GetDatabase(name string) *mongo.Database {
+	if Client == nil {
+		log.Fatal("MongoDB client is nil")
+	}
+	return Client.Database(name)
 }

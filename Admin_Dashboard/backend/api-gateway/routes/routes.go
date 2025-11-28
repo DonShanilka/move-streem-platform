@@ -1,4 +1,3 @@
-// api-gateway/internal/routes/routes.go
 package routes
 
 import (
@@ -9,14 +8,16 @@ import (
 func RegisterRoutes(app *fiber.App) {
 	api := app.Group("/api/v1")
 
-	// Forward /auth/* to auth-service
-	api.Post("/auth/register", proxyAuthService)
-	api.Post("/auth/login", proxyAuthService)
+	// Forward Auth requests
+	api.All("/auth/*", proxyAuthService)
 }
 
+// ReverseProxy forwards request to target microservice
 func ReverseProxy(target string, c *fiber.Ctx) error {
 	req := c.Request()
-	req.SetRequestURI(string(c.Request().RequestURI()))
+
+	// Keep original path after /auth/
+	req.SetRequestURI(string(c.Request().RequestURI())[len("/api/v1"):])
 	req.SetHost(target)
 
 	client := fasthttp.Client{}
@@ -27,5 +28,5 @@ func ReverseProxy(target string, c *fiber.Ctx) error {
 }
 
 func proxyAuthService(c *fiber.Ctx) error {
-	return ReverseProxy("localhost:9002", c) // port where auth-service runs
+	return ReverseProxy("localhost:9002", c) // Auth Service port
 }

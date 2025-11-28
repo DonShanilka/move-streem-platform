@@ -1,21 +1,27 @@
 package repository
 
 import (
-    "github.com/DonShanilka/auth-service/internal/config"
-    "github.com/DonShanilka/auth-service/internal/models"
-    "context"
+	"context"
+	"github.com/DonShanilka/auth-service/internal/database"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"time"
 )
 
-func CreateUser(user models.User) error {
-    _, err := config.DB.Database("movieapp").Collection("users").InsertOne(context.TODO(), user)
-    return err
+var userCollection *mongo.Collection
+
+func init() {
+	userCollection = database.GetDatabase("movie_db").Collection("users")
 }
 
-func FindUserByEmail(email string) (models.User, error) {
-    var user models.User
-    err := config.DB.Database("movieapp").Collection("users").FindOne(
-        context.TODO(),
-        map[string]interface{}{"email": email},
-    ).Decode(&user)
-    return user, err
+func CreateUser(name, email, password string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := userCollection.InsertOne(ctx, bson.M{
+		"name":     name,
+		"email":    email,
+		"password": password,
+	})
+	return err
 }
