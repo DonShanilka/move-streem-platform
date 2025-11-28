@@ -2,13 +2,19 @@ package main
 
 import (
     "log"
+    "auth-service/internal/config"
+    "auth-service/internal/routes"
     "github.com/gofiber/fiber/v2"
 )
 
 func main() {
     app := fiber.New()
-    app.Get("/health", func(c *fiber.Ctx) error {
-        return c.JSON(fiber.Map{"status": "auth service running"})
-    })
-    log.Fatal(app.Listen(":9001"))
+
+    // Database connect
+    config.ConnectDB()
+
+    // Load routes
+    routes.SetupAuthRoutes(app)
+
+    log.Fatal(app.Listen(":9002"))
 }
