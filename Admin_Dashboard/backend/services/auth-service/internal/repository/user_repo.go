@@ -1,8 +1,8 @@
 package repository
 
 import (
-    "auth-service/internal/config"
-    "auth-service/internal/models"
+    "github.com/DonShanilka/auth-service/internal/config"
+    "github.com/DonShanilka/auth-service/internal/models"
     "context"
 )
 

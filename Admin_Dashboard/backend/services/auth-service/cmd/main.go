@@ -2,8 +2,8 @@ package main
 
 import (
     "log"
-    "auth-service/internal/config"
-    "auth-service/internal/routes"
+    "github.com/DonShanilka/auth-service/internal/config"
+    "github.com/DonShanilka/auth-service/internal/routes"
     "github.com/gofiber/fiber/v2"
 )
 

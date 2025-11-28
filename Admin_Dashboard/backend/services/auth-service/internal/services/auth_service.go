@@ -1,8 +1,8 @@
 package services
 
 import (
-    "auth-service/internal/models"
-    "auth-service/internal/repository"
+    "github.com/DonShanilka/auth-service/internal/models"
+    "github.com/DonShanilka/auth-service/internal/repository"
     "golang.org/x/crypto/bcrypt"
     "github.com/golang-jwt/jwt/v5"
     "time"

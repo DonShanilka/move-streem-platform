@@ -2,7 +2,7 @@ package handlers
 
 import (
     "github.com/gofiber/fiber/v2"
-    "auth-service/internal/services"
+    "github.com/DonShanilka/auth-service/internal/services"
 )
 
 func Register(c *fiber.Ctx) error {
