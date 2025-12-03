@@ -86,12 +86,12 @@ func InitDB() (*sql.DB, error) {
 
     // movie_cast maping
     movieCastTable := `CREATE TABLE movie_cast (
-    movie_id INT,
-    cast_id INT,
-    role VARCHAR(100),
-    PRIMARY KEY (movie_id, cast_id),
-    FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
-    FOREIGN KEY (cast_id) REFERENCES cast_members(id) ON DELETE CASCADE
+        movie_id INT,
+        cast_id INT,
+        role VARCHAR(100),
+        PRIMARY KEY (movie_id, cast_id),
+        FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
+        FOREIGN KEY (cast_id) REFERENCES cast_members(id) ON DELETE CASCADE
     );`
     _, err = db.Exec(movieCastTable)
     if err != nil {
@@ -116,7 +116,18 @@ func InitDB() (*sql.DB, error) {
         return nil, err
     }
 
-
+    // series_genres mapping table
+    seriesGenresTable := `CREATE TABLE series_genres (
+        series_id INT,
+        genre_id INT,
+        PRIMARY KEY (series_id, genre_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE CASCADE
+    );`
+    _, err = db.Exec(seriesGenresTable)
+    if err != nil {
+       return nil, err
+    }
 
 	fmt.Println("✔ Database initialized: movies + genres tables created")
 	return db, nil
