@@ -12,29 +12,33 @@ type MovieRepository struct {
 	DB *sql.DB
 }
 
-func NewMovieRepository(db *sql.DB) *MovieRepository {
-	return &MovieRepository{DB: db}
-}
-
 func (r *MovieRepository) SaveMovie(movie models.Movie) error {
 
 	query := `INSERT INTO movies 
-        (title, description, genre, release_year, duration, file)
-        VALUES (?, ?, ?, ?, ?, ?)`
+        (title, description, release_year, language, duration, rating,
+         age_rating, country, thumbnail, banner, movie_url, trailer)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := r.DB.Exec(query,
 		movie.Title,
-		movie.Description,
-		movie.Genre,
-		movie.ReleaseYear,
-		movie.Duration,
-		movie.File,
+        movie.Description,
+        movie.ReleaseYear,
+        movie.Language,
+        movie.Duration,
+        movie.Rating,
+        movie.AgeRating,
+        movie.Country,
+        movie.Thumbnail,
+        movie.Banner,
+        movie.MovieURL,
+        movie.Trailer,
 	)
 	return err
 }
 
 func (r *MovieRepository) GetAllMovies() ([]models.Movie, error) {
-	query := `SELECT id, title, description, genre, release_year, duration FROM movies`
+	query := `SELECT id, title, description, release_year, language, duration, rating,
+         age_rating, country, thumbnail, banner, movie_url, trailer FROM movies`
 	rows, err := r.DB.Query(query)
 	if err != nil {
 		return nil, err
