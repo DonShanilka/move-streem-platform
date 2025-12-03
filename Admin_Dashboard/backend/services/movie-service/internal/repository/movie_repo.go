@@ -43,7 +43,6 @@ func InitDB() (*sql.DB, error) {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`
-
 	_, err = db.Exec(moviesTable)
 	if err != nil {
 		return nil, err
@@ -55,7 +54,6 @@ func InitDB() (*sql.DB, error) {
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(50) NOT NULL UNIQUE
     );`
-
 	_, err = db.Exec(genresTable)
 	if err != nil {
 		return nil, err
@@ -68,7 +66,6 @@ func InitDB() (*sql.DB, error) {
     bio TEXT,
     avatar_url TEXT
     );`
-
 	_, err = db.Exec(castTable)
 	if err != nil {
 		return nil, err
@@ -82,7 +79,6 @@ func InitDB() (*sql.DB, error) {
         FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
         FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE CASCADE
     );`
-
     _, err = db.Exec(movieGenresTable)
     if err != nil {
         return nil, err
@@ -97,13 +93,29 @@ func InitDB() (*sql.DB, error) {
     FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
     FOREIGN KEY (cast_id) REFERENCES cast_members(id) ON DELETE CASCADE
     );`
-
     _, err = db.Exec(movieCastTable)
     if err != nil {
         return nil, err
     }
 
-    
+    // Tvshows table
+    tvshowsTable := `CREATE TABLE series (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        release_year INT,
+        language VARCHAR(50),
+        season_count INT DEFAULT 1,
+        thumbnail_url TEXT,
+        banner_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );`
+    _, err = db.Exec(tvshowsTable)
+    if err != nil {
+        return nil, err
+    }
+
 
 
 	fmt.Println("✔ Database initialized: movies + genres tables created")
