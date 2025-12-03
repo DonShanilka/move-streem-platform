@@ -1,21 +1,20 @@
 package services
 
 import (
-    "database/sql"
-    "fmt"
+	"database/sql"
 
-    "github.com/DonShanilka/movie-service/internal/models"
-    "github.com/DonShanilka/movie-service/internal/repository"
+	"github.com/DonShanilka/movie-service/internal/models"
+	"github.com/DonShanilka/movie-service/internal/repository"
 )
 
 type MovieService struct {
-    Repo *repository.MovieRepository
+	Repo *repository.MovieRepository
 }
 
 func NewMovieService(db *sql.DB) *MovieService {
-    return &MovieService{
-        Repo: repository.NewMovieRepository(db),
-    }
+	return &MovieService{
+		Repo: &repository.MovieRepository{DB: db},
+	}
 }
 
 func (s *MovieService) SaveMovie(movie models.Movie) error {
@@ -29,17 +28,14 @@ func (s *MovieService) GetAllMovies() ([]models.Movie, error) {
     }
 
     for i := range movies {
-        // Remove file
-        movies[i].File = nil
-
-        // Add video URL
-        movies[i].VideoURL = fmt.Sprintf("http://localhost:8080/api/movies/stream?id=%d", movies[i].ID)
+        movies[i].MovieURL = "http://localhost:8080/movies/" + movies[i].MovieURL
     }
 
     return movies, nil
 }
 
 
+// Stream main movie file (stored locally)
 func (s *MovieService) GetMovieFile(id int) ([]byte, error) {
-    return s.Repo.GetMovieFile(id)
+	return s.Repo.GetMovieFile(id)
 }

@@ -20,7 +20,7 @@ func InitDB() (*sql.DB, error) {
 
 	// --- Create movies table ---
 	moviesTable := `
-        CREATE TABLE movies (
+        CREATE TABLE IF NOT EXISTS movies (
         id INT PRIMARY KEY AUTO_INCREMENT,
         title VARCHAR(255) NOT NULL,
         description TEXT,
@@ -171,15 +171,15 @@ func InitDB() (*sql.DB, error) {
 
     // Favorites Table
     favoritesTable := `CREATE TABLE IF NOT EXISTS favorites (
-        user_id INT,
-        movie_id INT NULL,
-        series_id INT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (user_id, movie_id, series_id),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
-        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
-    );`
+    	id INT AUTO_INCREMENT PRIMARY KEY,
+    	user_id INT NOT NULL,
+    	movie_id INT NULL,
+    	series_id INT NULL,
+    	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    	FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
+    	FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
+	);`
     _, err = db.Exec(favoritesTable)
     if err != nil {
        return nil, err

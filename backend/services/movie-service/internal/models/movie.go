@@ -7,7 +7,7 @@ type Movie struct {
     ReleaseYear int
     Language    string
     Duration    int
-    Rating      float64
+    Rating      string
     AgeRating   string
     Country     string
 
