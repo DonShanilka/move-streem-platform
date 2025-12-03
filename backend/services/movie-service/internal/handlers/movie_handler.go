@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/DonShanilka/movie-service/internal/models"
-	"github.com/DonShanilka/movie-service/internal/services"
+	"github.com/DonShanilka/movie-service/internal/service"
 )
 
 type MovieHandler struct {

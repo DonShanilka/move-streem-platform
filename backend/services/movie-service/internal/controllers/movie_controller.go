@@ -2,7 +2,7 @@ package controllers
 
 import (
     "github.com/DonShanilka/movie-service/internal/models"
-    "github.com/DonShanilka/movie-service/internal/services"
+    "github.com/DonShanilka/movie-service/internal/service"
 )
 
 type MovieController struct {

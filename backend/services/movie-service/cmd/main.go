@@ -7,7 +7,7 @@ import (
 	"github.com/DonShanilka/movie-service/internal/handlers"
 	"github.com/DonShanilka/movie-service/internal/db"
 	"github.com/DonShanilka/movie-service/internal/routes"
-	"github.com/DonShanilka/movie-service/internal/services"
+	"github.com/DonShanilka/movie-service/internal/service"
 )
 
 func main() {
