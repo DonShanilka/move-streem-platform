@@ -129,6 +129,22 @@ func InitDB() (*sql.DB, error) {
        return nil, err
     }
 
+    // Series–Cast Mapping
+    seriesCastTable := `CREATE TABLE series_cast (
+        series_id INT,
+        cast_id INT,
+        role VARCHAR(100),
+        PRIMARY KEY (series_id, cast_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (cast_id) REFERENCES cast_members(id) ON DELETE CASCADE
+    );`
+    _, err = db.Exec(seriesCastTable)
+    if err != nil {
+       return nil, err
+    }
+
+
+
 	fmt.Println("✔ Database initialized: movies + genres tables created")
 	return db, nil
 }
