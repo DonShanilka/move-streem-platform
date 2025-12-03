@@ -42,7 +42,7 @@ func InitDB() (*sql.DB, error) {
         trailer LONGBLOB,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    )`
+    );`
 
 	_, err = db.Exec(moviesTable)
 	if err != nil {
@@ -54,7 +54,7 @@ func InitDB() (*sql.DB, error) {
     CREATE TABLE IF NOT EXISTS genres (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(50) NOT NULL UNIQUE
-    )`
+    );`
 
 	_, err = db.Exec(genresTable)
 	if err != nil {
@@ -67,12 +67,44 @@ func InitDB() (*sql.DB, error) {
     name VARCHAR(100) NOT NULL,
     bio TEXT,
     avatar_url TEXT
-    )`
+    );`
 
 	_, err = db.Exec(castTable)
 	if err != nil {
 		return nil, err
 	}
+
+    // movie_genres maping
+    movieGenresTable := `CREATE TABLE IF NOT EXISTS movie_genres (
+        movie_id INT,
+        genre_id INT,
+        PRIMARY KEY (movie_id, genre_id),
+        FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
+        FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE CASCADE
+    );`
+
+    _, err = db.Exec(movieGenresTable)
+    if err != nil {
+        return nil, err
+    }
+
+    // movie_cast maping
+    movieCastTable := `CREATE TABLE movie_cast (
+    movie_id INT,
+    cast_id INT,
+    role VARCHAR(100),
+    PRIMARY KEY (movie_id, cast_id),
+    FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
+    FOREIGN KEY (cast_id) REFERENCES cast_members(id) ON DELETE CASCADE
+    );`
+
+    _, err = db.Exec(movieCastTable)
+    if err != nil {
+        return nil, err
+    }
+
+    
+
 
 	fmt.Println("✔ Database initialized: movies + genres tables created")
 	return db, nil
