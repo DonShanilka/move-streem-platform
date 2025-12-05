@@ -10,3 +10,10 @@ func RegisterMovieRoutes(mux *http.ServeMux, h *handlers.MovieHandler) {
     mux.HandleFunc("/api/movies/upload", h.UploadMovie)
     mux.HandleFunc("/api/movies/stream", h.StreamMovie)
 }
+
+
+func RegisterSeriesRoutes(mux *http.ServeMux, h *handlers.SeriesHandler) {
+    // mux.HandleFunc("/api/series", h.ListSeries)
+    mux.HandleFunc("/api/series/upload", h.UpdaloadSeries)
+    // mux.HandleFunc("/api/series/stream", h.StreamSeries)
+}

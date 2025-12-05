@@ -19,8 +19,12 @@ func main() {
 	movieService := services.NewMovieService(db)
 	movieHandler := handlers.NewMovieHandler(movieService)
 
+	seriesService := services.NewSeriesService(db)
+	seriesHandler := handlers.NewSeriesHandler(seriesService)
+
 	mux := http.NewServeMux()
 	routes.RegisterMovieRoutes(mux, movieHandler)
+	routes.RegisterSeriesRoutes(mux, seriesHandler)
 
 	// Global CORS middleware
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
