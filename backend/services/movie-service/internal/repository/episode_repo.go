@@ -12,7 +12,7 @@ type EpisodeRepository struct {
 	DB *sql.DB
 }
 
-func (r *EpisodeRepository) SaveEPisode(episode models.Episode) error {
+func (r *EpisodeRepository) SaveEpisode(episode models.Episode) error {
 	quary := `INSERT INTO episodes 
 		(series_id, season_number, episode_number, title, description, duration, thumbnail_url, episode_url, release_date)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
@@ -29,5 +29,5 @@ func (r *EpisodeRepository) SaveEPisode(episode models.Episode) error {
 		episode.ReleaseDate,
 	)
 	return err
-	
+
 }
