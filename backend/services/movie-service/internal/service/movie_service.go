@@ -28,7 +28,7 @@ func (s *MovieService) GetAllMovies() ([]models.Movie, error) {
     }
 
     for i := range movies {
-        movies[i].MovieURL = "http://localhost:8080/movies/" + movies[i].MovieURL
+        movies[i].MovieURL = "http://localhost:8080/movies/getAllMovies/" + movies[i].MovieURL
     }
 
     return movies, nil
