@@ -109,8 +109,6 @@ func (h *MovieHandler) UploadMovie(w http.ResponseWriter, r *http.Request) {
     })
 }
 
-
-
 // List metadata only
 func (h *MovieHandler) ListMovies(w http.ResponseWriter, r *http.Request) {
     movies, err := h.Service.GetAllMovies()

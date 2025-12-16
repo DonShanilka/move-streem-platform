@@ -36,6 +36,44 @@ func (r *MovieRepository) SaveMovie(movie models.Movie) error {
 	return err
 }
 
+func (r *MovieRepository) UpdateMovie(movie models.Movie) error {
+
+	query := `UPDATE movies SET
+		title = ?,
+		description = ?,
+		release_year = ?,
+		language = ?,
+		duration = ?,
+		rating = ?,
+		age_rating = ?,
+		country = ?,
+		thumbnail = ?,
+		banner = ?,
+		movie_url = ?,
+		trailer = ?
+	WHERE id = ?`
+
+	_, err := r.DB.Exec(
+		query,
+		movie.Title,
+		movie.Description,
+		movie.ReleaseYear,
+		movie.Language,
+		movie.Duration,
+		movie.Rating,
+		movie.AgeRating,
+		movie.Country,
+		movie.Thumbnail,
+		movie.Banner,
+		movie.MovieURL,
+		movie.Trailer,
+		movie.ID,
+	)
+
+	return err
+}
+
+
 func (r *MovieRepository) GetAllMovies() ([]models.Movie, error) {
 	query := `SELECT id, title, description, release_year, language, duration, rating,
          age_rating, country, thumbnail, banner, movie_url, trailer 
