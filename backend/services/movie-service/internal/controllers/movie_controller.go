@@ -20,3 +20,7 @@ func (c *MovieController) CreateMovie(movie models.Movie) error {
 func (c *MovieController) GetMovies() ([]models.Movie, error) {
     return c.Service.GetAllMovies()
 }
+
+func (c *MovieController) UpdateMovie(movie models.Movie) error {
+    return c.Service.UpdateMovie(movie)
+}
