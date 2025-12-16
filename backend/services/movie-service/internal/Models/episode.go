@@ -1,14 +1,14 @@
-package models
+package Models
 
 type Episode struct {
-    ID            int    
-    SeriesID      int    
-    SeasonNumber  int    
-    EpisodeNumber int    
-    Title         string 
-    Description   string 
-    Duration      int    
-    ThumbnailURL  string 
-    EpisodeURL    string      
-    ReleaseDate   string   
+	ID            int
+	SeriesID      int
+	SeasonNumber  int
+	EpisodeNumber int
+	Title         string
+	Description   string
+	Duration      int
+	ThumbnailURL  string
+	EpisodeURL    string
+	ReleaseDate   string
 }

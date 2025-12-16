@@ -10,7 +10,7 @@ import (
 func main() {
 	app := fiber.New()
 
-	// Register routes
+	// Register Routes
 	RegisterRoutes(app)
 
 	log.Println("API Gateway running on :8080")

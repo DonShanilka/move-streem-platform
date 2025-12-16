@@ -1,45 +1,45 @@
 package main
 
 import (
-    "log"
+	"log"
 
-    "github.com/DonShanilka/auth-service/internal/config"
-    "github.com/DonShanilka/auth-service/internal/database"
-    "github.com/DonShanilka/auth-service/internal/routes"
-    "github.com/gofiber/fiber/v2"
+	"github.com/DonShanilka/auth-service/internal/config"
+	"github.com/DonShanilka/auth-service/internal/database"
+	"github.com/DonShanilka/auth-service/internal/routes"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-    log.Println("Starting Auth Service...")
+	log.Println("Starting Auth Service...")
 
-    // Load ENV
-    cfg, err := config.LoadConfig()
-    if err != nil {
-        log.Fatal("Failed to load config:", err)
-    }
+	// Load ENV
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal("Failed to load config:", err)
+	}
 
-    log.Println("PORT:", cfg.Port)
-    log.Println("MONGO_URI:", cfg.MongoURI)
-    log.Println("MONGO_DB:", cfg.Database)
+	log.Println("PORT:", cfg.Port)
+	log.Println("MONGO_URI:", cfg.MongoURI)
+	log.Println("MONGO_DB:", cfg.Database)
 
-    // Connect to Mongo (pass BOTH URI and DB name)
-    db, err := database.ConnectMongo(cfg.MongoURI, cfg.Database)
-    if err != nil {
-        log.Fatal("Mongo connection failed:", err)
-    }
-    log.Println("MongoDB connected!")
+	// Connect to Mongo (pass BOTH URI and DB name)
+	db, err := database.ConnectMongo(cfg.MongoURI, cfg.Database)
+	if err != nil {
+		log.Fatal("Mongo connection failed:", err)
+	}
+	log.Println("MongoDB connected!")
 
-    // Setup Fiber
-    app := fiber.New()
+	// Setup Fiber
+	app := fiber.New()
 
-    // Pass DB + config into routes
-    routes.AuthRoutes(app, db, cfg)
+	// Pass DB + config into Routes
+	routes.AuthRoutes(app, db, cfg)
 
-    // Start server
-    log.Println("Auth Service running on port:", cfg.Port)
+	// Start server
+	log.Println("Auth Service running on port:", cfg.Port)
 
-    err = app.Listen("0.0.0.0:" + cfg.Port)
-    if err != nil {
-        log.Fatal("Fiber failed:", err)
-    }
+	err = app.Listen("0.0.0.0:" + cfg.Port)
+	if err != nil {
+		log.Fatal("Fiber failed:", err)
+	}
 }

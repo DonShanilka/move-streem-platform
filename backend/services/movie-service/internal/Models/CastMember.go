@@ -1,4 +1,4 @@
-package models
+package Models
 
 type CastMember struct {
 	ID        uint   `gorm:"primaryKey"`

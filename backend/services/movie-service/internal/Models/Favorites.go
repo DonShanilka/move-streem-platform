@@ -1,11 +1,11 @@
-package models
+package Models
 
 import "time"
 
 type Favorite struct {
-	ID       uint `gorm:"primaryKey"`
-	UserID   uint `gorm:"index;not null"`
-	MovieID  *uint
-	SeriesID *uint
+	ID        uint `gorm:"primaryKey"`
+	UserID    uint `gorm:"index;not null"`
+	MovieID   *uint
+	SeriesID  *uint
 	CreatedAt time.Time
 }

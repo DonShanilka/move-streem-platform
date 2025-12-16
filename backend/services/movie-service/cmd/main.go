@@ -4,46 +4,39 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/DonShanilka/movie-service/internal/handlers"
+	"github.com/DonShanilka/movie-service/internal/Handler"
+	"github.com/DonShanilka/movie-service/internal/Repository"
+	"github.com/DonShanilka/movie-service/internal/Routes"
+	"github.com/DonShanilka/movie-service/internal/Service"
 	"github.com/DonShanilka/movie-service/internal/db"
-	"github.com/DonShanilka/movie-service/internal/routes"
-	"github.com/DonShanilka/movie-service/internal/service"
 )
 
 func main() {
-	db, err := db.InitDB()
+	database, err := db.InitDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	movieService := services.NewMovieService(db)
-	movieHandler := handlers.NewMovieHandler(movieService)
-
-	seriesService := services.NewSeriesService(db)
-	seriesHandler := handlers.NewSeriesHandler(seriesService)
-
-	episiodeService := services.NewEpisodeService(db)
-	episodeHandler := handlers.NewEpisodeHandler(episiodeService)
+	movieRepo := Repository.NewMovieRepository(database)
+	movieService := services.NewMovieService(movieRepo)
+	movieHandler := Handler.NewMovieHandler(movieService)
 
 	mux := http.NewServeMux()
-	routes.RegisterMovieRoutes(mux, movieHandler)
-	routes.RegisterSeriesRoutes(mux, seriesHandler)
-	routes.RegisterEpisodeRoutes(mux, episodeHandler)
+	Routes.RegisterMovieRoutes(mux, movieHandler)
 
-	// Global CORS middleware
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	handler := http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Access-Control-Allow-Origin", "*")
+		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		writer.Header().Set("Access-Control-Expose-Headers", "Content-Length")
+		writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-		if r.Method == http.MethodOptions {
+		if request.Method == http.MethodOptions {
 			return
 		}
-
-		mux.ServeHTTP(w, r)
+		mux.ServeHTTP(writer, request)
 	})
 
-	log.Println("Server running at http://localhost:8080 ✅")
+	log.Println("Movie Service running on :8080 🚀")
 	log.Fatal(http.ListenAndServe(":8080", handler))
 }

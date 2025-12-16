@@ -1,10 +1,10 @@
-package repository
+package Repository
 
 import (
 	"database/sql"
 	// "errors"
 
-	"github.com/DonShanilka/movie-service/internal/models"
+	"github.com/DonShanilka/movie-service/internal/Models"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -12,7 +12,7 @@ type SeriesRepository struct {
 	DB *sql.DB
 }
 
-func (r *SeriesRepository) SaveSeries(series models.Series) error {
+func (r *SeriesRepository) SaveSeries(series Models.Series) error {
 	quary := `INSERT INTO series (title, description, release_year, language, 					season_count, thumbnail_url, banner) VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := r.DB.Exec(quary,
