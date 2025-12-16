@@ -8,7 +8,7 @@ import (
 
 func RegisterMovieRoutes(mux *http.ServeMux, h *Handler.MovieHandler) {
 	mux.HandleFunc("/api/movies/getAllMovies", h.GetAllMovies)
-	mux.HandleFunc("/api/movies/create", h.CreateMovie)
-	mux.HandleFunc("/api/movies/update", h.UpdateMovie)
-	mux.HandleFunc("/api/movies/delete", h.DeleteMovie)
+	mux.HandleFunc("/api/movies/uploadMovie", h.CreateMovie)
+	mux.HandleFunc("/api/movies/updateMovie", h.UpdateMovie)
+	mux.HandleFunc("/api/movies/deleteMovie", h.DeleteMovie)
 }
