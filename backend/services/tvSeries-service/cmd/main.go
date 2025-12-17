@@ -11,36 +11,17 @@ import (
 )
 
 func main() {
-	// Initialize MongoDB Atlas
 	database, err := db.InitMongoDB()
 	if err != nil {
 		log.Fatal("Failed to connect to MongoDB Atlas ❌:", err)
 	}
 
-	// =========================
-	// Repositories
-	// =========================
-	movieRepo := Repository.NewMovieRepository(database.Collection("movies"))
-	tvSeriesRepo := Repository.NewTvSeriesRepository(database)
-
-	// =========================
-	// Handlers
-	// =========================
-	// Movies
-	movieHandler := Handler.NewMovieHandler(movieRepo)
-	// TV Series
-	tvSeriesHandler := Handler.NewTvSeriesHandler(tvSeriesRepo)
-
-	// =========================
-	// HTTP Routes
-	// =========================
 	mux := http.NewServeMux()
-	Routes.RegisterMovieRoutes(mux, movieHandler)
+
+	tvSeriesRepo := Repository.NewTvSeriesRepository(database)
+	tvSeriesHandler := Handler.NewTvSeriesHandler(tvSeriesRepo)
 	Routes.RegisterTvSeriesRoutes(mux, tvSeriesHandler)
 
-	// =========================
-	// CORS Middleware
-	// =========================
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
