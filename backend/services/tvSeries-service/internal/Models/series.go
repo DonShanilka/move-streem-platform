@@ -1,12 +1,11 @@
 package Models
 
 type Series struct {
-	ID           int
-	Title        string
-	Description  string
-	ReleaseYear  int
-	Language     string
-	SeasonCount  int
-	ThumbnailURL string
-	Banner       []byte
+	ID          int
+	Title       string
+	Description string
+	ReleaseYear int
+	Language    string
+	SeasonCount int
+	Banner      []byte
 }

@@ -13,18 +13,13 @@ import (
 
 func main() {
 	// Connect to MongoDB Atlas
-	database, err := db.InitMongoDB()
+	database, err := db.InitDB()
 	if err != nil {
 		log.Fatal("Failed to connect to MongoDB Atlas ❌:", err)
 	}
 
-	// Repository
 	tvSeriesRepo := Repository.NewTvSeriesRepository(database)
-
-	// Service
-	tvSeriesService := Service.NewTvSeriesService(tvSeriesRepo)
-
-	// Handler
+	tvSeriesService := Service.NewTvSerriesService(tvSeriesRepo)
 	tvSeriesHandler := Handler.NewTvSeriesHandler(tvSeriesService)
 
 	mux := http.NewServeMux()

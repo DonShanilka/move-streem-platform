@@ -2,79 +2,53 @@ package Handler
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
+	"strconv"
 
 	"github.com/DonShanilka/tvSeries-service/internal/Models"
 	"github.com/DonShanilka/tvSeries-service/internal/Service"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type TvSeriesHandler struct {
-	Service *Service.TvSeriesService
+	Service *Service.TvSerriesService
 }
 
-func NewTvSeriesHandler(
-	service *Service.TvSeriesService,
-) *TvSeriesHandler {
+func NewTvSeriesHandler(service *Service.TvSerriesService) *TvSeriesHandler {
 	return &TvSeriesHandler{Service: service}
 }
 
-// ---------------- CREATE SERIES ----------------
-func (h *TvSeriesHandler) CreateSeries(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	w.Header().Set("Content-Type", "application/json")
-
-	var series Models.Series
-	if err := json.NewDecoder(r.Body).Decode(&series); err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
-
-	id, err := h.Service.CreateSeries(&series)
-	if err != nil {
+func (h *TvSeriesHandler) CreateTvSeries(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseMultipartForm(100 << 20); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	tvSeries := Models.Series{
+		Title:       r.FormValue("title"),
+		Description: r.FormValue("description"),
+		ReleaseYear: atoiSafe(r.FormValue("releaseYear")),
+		SeasonCount: atoiSafe(r.FormValue("seasonCount")),
+		Language:    r.FormValue("language"),
+	}
+
+	if file, _, _ := r.FormFile("banner"); file != nil {
+		tvSeries.Banner, _ = io.ReadAll(file)
+		file.Close()
+	}
+
+	if err := h.Service.CreateTvSeries(&tvSeries); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Series created",
-		"id":      id.Hex(),
+		"status":  "success",
+		"message": "Tv series created",
 	})
 }
 
-// ---------------- ADD SEASON ----------------
-func (h *TvSeriesHandler) AddSeason(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	w.Header().Set("Content-Type", "application/json")
-
-	seriesIDHex := r.URL.Query().Get("seriesId")
-	if seriesIDHex == "" {
-		http.Error(w, "seriesId required", http.StatusBadRequest)
-		return
-	}
-
-	seriesID, err := primitive.ObjectIDFromHex(seriesIDHex)
-	if err != nil {
-		http.Error(w, "Invalid seriesId", http.StatusBadRequest)
-		return
-	}
-
-	var season Models.Season
-	if err := json.NewDecoder(r.Body).Decode(&season); err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
-
-	if err := h.Service.AddSeason(seriesID, season); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Season added successfully",
-	})
+func atoiSafe(value string) int {
+	i, _ := strconv.Atoi(value)
+	return i
 }
