@@ -7,6 +7,6 @@ import (
 )
 
 func RegisterTvSeriesRoutes(mux *http.ServeMux, h *Handler.TvSeriesHandler) {
-	mux.HandleFunc("/api/series/create", h.CreateSeries)  // POST
-	mux.HandleFunc("/api/series/add-season", h.AddSeason) // POST
+	mux.HandleFunc("/api/series/createSeries", h.CreateTvSeries) // POST
+	//mux.HandleFunc("/api/series/add-season", h.AddSeason)
 }
