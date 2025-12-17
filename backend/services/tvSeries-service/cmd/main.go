@@ -12,29 +12,34 @@ import (
 )
 
 func main() {
-	database, err := db.InitDB()
+	// Initialize MongoDB Atlas
+	database, err := db.InitMongoDB()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to connect to MongoDB Atlas ❌:", err)
 	}
 
-	movieRepo := Repository.NewMovieRepository(database)
-	movieService := services.NewMovieService(movieRepo)
-	movieHandler := Handler.NewMovieHandler(movieService)
+	// Create repository with MongoDB collection
+	movieRepo := Repository.NewMovieRepository(database) // expect it uses db.GetCollection("movies")
+	//movieService := Service.NewMovieService(movieRepo)
+	//movieHandler := Handler.NewMovieHandler(movieService)
 
-	mux := http.NewServeMux()
-	Routes.RegisterMovieRoutes(mux, movieHandler)
+	// HTTP multiplexer
+	//mux := http.NewServeMux()
+	//Routes.RegisterMovieRoutes(mux, movieHandler)
 
-	handler := http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("Access-Control-Allow-Origin", "*")
-		writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		writer.Header().Set("Access-Control-Expose-Headers", "Content-Length")
-		writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	// CORS middleware
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Length")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
 
-		if request.Method == http.MethodOptions {
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
 			return
 		}
-		mux.ServeHTTP(writer, request)
+		mux.ServeHTTP(w, r)
 	})
 
 	log.Println("Movie Service running on :8080 🚀")
