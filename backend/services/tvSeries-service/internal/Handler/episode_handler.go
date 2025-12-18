@@ -43,7 +43,7 @@ func (h *EpisodeHandler) UploadEpisode(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Upload to B2 + save in MySQL
-	err = h.Service.UploadEpisode(&ep, file, header.Filename)
+	err = h.Service.CreateEpisode(&ep, file, header.Filename)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

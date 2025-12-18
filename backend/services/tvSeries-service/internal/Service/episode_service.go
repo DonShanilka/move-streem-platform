@@ -15,6 +15,14 @@ func NewEpisodeService(repo *Repository.EpisodeRepository) *EpisodeService {
 	return &EpisodeService{Repo: repo}
 }
 
-func (s *EpisodeService) UploadEpisode(ep *Models.Episode, file io.Reader, fileName string) error {
+func (s *EpisodeService) CreateEpisode(ep *Models.Episode, file io.Reader, fileName string) error {
 	return s.Repo.SaveEpisodeWithFile(ep, file, fileName)
+}
+
+func (s *EpisodeService) UpdateEpisode(
+	ep *Models.Episode,
+	file io.Reader,
+	fileName string,
+) error {
+	return s.Repo.UpdateEpisodeWithFile(ep, file, fileName)
 }
