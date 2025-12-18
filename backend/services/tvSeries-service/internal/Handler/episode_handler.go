@@ -96,7 +96,7 @@ func (h *EpisodeHandler) DeleteEpisode(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Episode deleted successfully"))
 }
 
-func (h *EpisodeHandler) GetAllEpisodes(w http.ResponseWriter) {
+func (h *EpisodeHandler) GetAllEpisodes(w http.ResponseWriter, r *http.Request) {
 	movies, err := h.Service.GetAllEpisodes()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
