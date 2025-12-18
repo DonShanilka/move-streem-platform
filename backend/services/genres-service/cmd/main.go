@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/DonShanilka/geners-service/internal/Handler"
-	"github.com/DonShanilka/geners-service/internal/Repository"
-	"github.com/DonShanilka/geners-service/internal/Routes"
-	"github.com/DonShanilka/geners-service/internal/Service"
-	"github.com/DonShanilka/geners-service/internal/db"
+	"github.com/DonShanilka/genres-service/internal/Handler"
+	"github.com/DonShanilka/genres-service/internal/Repository"
+	"github.com/DonShanilka/genres-service/internal/Routes"
+	"github.com/DonShanilka/genres-service/internal/Service"
+	"github.com/DonShanilka/genres-service/internal/db"
 )
 
 func main() {
@@ -17,12 +17,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	movieRepo := Repository.NewMovieRepository(database)
-	movieService := services.NewMovieService(movieRepo)
-	movieHandler := Handler.NewMovieHandler(movieService)
+	genreRepo := Repository.NewGenerRepostry(database)
+	genreService := Service.NewGenreService(genreRepo)
+	genreHandler := Handler.NewGenreHandler(genreService)
 
 	mux := http.NewServeMux()
-	Routes.RegisterMovieRoutes(mux, movieHandler)
+	Routes.RegisterGenreRoutes(mux, genreHandler)
 
 	handler := http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -37,6 +37,6 @@ func main() {
 		mux.ServeHTTP(writer, request)
 	})
 
-	log.Println("Movie Service running on :8080 🚀")
+	log.Println("Genres Service running on :8080 🚀")
 	log.Fatal(http.ListenAndServe(":8080", handler))
 }
