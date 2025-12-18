@@ -3,6 +3,7 @@ module github.com/DonShanilka/tvSeries-service
 go 1.24.4
 
 require (
+	github.com/klauspost/compress v1.18.2
 	github.com/kurin/blazer v0.5.3
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.31.1

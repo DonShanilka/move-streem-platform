@@ -32,5 +32,5 @@ func (s *EpisodeService) DeleteEpisode(id int) error {
 }
 
 func (s *EpisodeService) GetAllEpisodes() ([]Models.Episode, error) {
-	return s.Repo.GetAll()
+	return s.Repo.GetAllEpisode()
 }

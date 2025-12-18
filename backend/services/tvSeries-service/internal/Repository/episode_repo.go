@@ -2,6 +2,7 @@ package Repository
 
 import (
 	"context"
+	"errors"
 	"io"
 	"strings"
 
@@ -111,8 +112,23 @@ func (r *EpisodeRepository) DeleteEpisode(id int) error {
 	return r.DB.Delete(&ep).Error
 }
 
-func (r *EpisodeRepository) GetAll() ([]Models.Episode, error) {
+func (r *EpisodeRepository) GetAllEpisode() ([]Models.Episode, error) {
 	var episode []Models.Episode
 	err := r.DB.Find(&episode).Error
 	return episode, err
+}
+
+// Get episode by ID
+func (r *EpisodeRepository) GetEpisodeByID(id int) (*Models.Episode, error) {
+	var episode Models.Episode
+
+	err := r.DB.First(&episode, id).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("episode not found")
+		}
+		return nil, err
+	}
+
+	return &episode, nil
 }
