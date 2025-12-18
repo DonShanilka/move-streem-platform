@@ -17,7 +17,7 @@ func NewEpisodeHandler(s *Service.EpisodeService) *EpisodeHandler {
 }
 
 // POST /api/episodes/upload
-func (h *EpisodeHandler) UploadEpisode(w http.ResponseWriter, r *http.Request) {
+func (h *EpisodeHandler) CreateEpisode(w http.ResponseWriter, r *http.Request) {
 	// Parse multipart/form-data
 	if err := r.ParseMultipartForm(100 << 20); err != nil { // 100MB limit
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -52,7 +52,34 @@ func (h *EpisodeHandler) UploadEpisode(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(ep)
 }
 
-//func atoiSafe(value string) int {
-//	i, _ := strconv.Atoi(value)
-//	return i
-//}
+func (h *EpisodeHandler) UpdateEpisode(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseMultipartForm(100 << 20); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	file, header, err := r.FormFile("episode")
+	if err != nil {
+		http.Error(w, "Video file required", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	ep := Models.Episode{
+		ID:            atoiSafe(r.FormValue("id")),
+		SeriesID:      atoiSafe(r.FormValue("series_id")),
+		SeasonNumber:  atoiSafe(r.FormValue("season_number")),
+		EpisodeNumber: atoiSafe(r.FormValue("episode_number")),
+		Title:         r.FormValue("title"),
+		Description:   r.FormValue("description"),
+		Duration:      atoiSafe(r.FormValue("duration")),
+		ReleaseDate:   r.FormValue("release_date"),
+	}
+
+	if err := h.Service.UpdateEpisode(&ep, file, header.Filename); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(ep)
+}
