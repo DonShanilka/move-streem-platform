@@ -3,6 +3,7 @@ package Handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/DonShanilka/tvSeries-service/internal/Models"
 	"github.com/DonShanilka/tvSeries-service/internal/Service"
@@ -103,4 +104,28 @@ func (h *EpisodeHandler) GetAllEpisodes(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	json.NewEncoder(w).Encode(movies)
+}
+
+// GET /api/episodes/{id}
+func (h *EpisodeHandler) GetEpisodeByID(w http.ResponseWriter, r *http.Request) {
+	idStr := r.URL.Query().Get("id")
+	if idStr == "" {
+		http.Error(w, "episode id is required", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "invalid episode id", http.StatusBadRequest)
+		return
+	}
+
+	episode, err := h.Service.GetEpisodeByID(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(episode)
 }
