@@ -1,7 +1,7 @@
 package Repository
 
 import (
-	"github.com/DonShanilka/geners-service/internal/Models"
+	"github.com/DonShanilka/genres-service/internal/Models"
 	"gorm.io/gorm"
 )
 

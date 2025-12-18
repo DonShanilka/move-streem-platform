@@ -1,8 +1,8 @@
-package services
+package Service
 
 import (
-	"github.com/DonShanilka/geners-service/internal/Models"
-	"github.com/DonShanilka/geners-service/internal/Repository"
+	"github.com/DonShanilka/genres-service/internal/Models"
+	"github.com/DonShanilka/genres-service/internal/Repository"
 )
 
 type GenreService struct {
