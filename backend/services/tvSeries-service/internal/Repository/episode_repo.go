@@ -89,3 +89,24 @@ func (r *EpisodeRepository) UpdateEpisodeWithFile(
 	ep.Episode = obj.URL()
 	return r.DB.Save(ep).Error
 }
+
+func (r *EpisodeRepository) DeleteEpisode(id int) error {
+	var ep Models.Episode
+
+	// 1️⃣ Find episode
+	if err := r.DB.First(&ep, id).Error; err != nil {
+		return err
+	}
+
+	ctx := context.Background()
+
+	// 2️⃣ Delete video from B2
+	if ep.Episode != "" {
+		fileName := extractB2FileName(ep.Episode)
+		obj := r.Bucket.Object(fileName)
+		_ = obj.Delete(ctx)
+	}
+
+	// 3️⃣ Delete DB record
+	return r.DB.Delete(&ep).Error
+}
