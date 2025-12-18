@@ -67,6 +67,8 @@ func main() {
 
 	// Episode routes
 	mux.HandleFunc("/api/episodes/create", epHandler.CreateEpisode)
+	mux.HandleFunc("/api/episodes/update", epHandler.UpdateEpisode)
+	mux.HandleFunc("/api/episodes/delete", epHandler.DeleteEpisode)
 
 	// ------------------ SERVER + CORS ------------------
 	log.Println("TV Series Service running on :8080 🚀")

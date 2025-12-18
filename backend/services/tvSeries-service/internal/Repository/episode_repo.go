@@ -110,3 +110,9 @@ func (r *EpisodeRepository) DeleteEpisode(id int) error {
 	// 3️⃣ Delete DB record
 	return r.DB.Delete(&ep).Error
 }
+
+func (r *EpisodeRepository) GetAll() ([]Models.Episode, error) {
+	var episode []Models.Episode
+	err := r.DB.Find(&episode).Error
+	return episode, err
+}
