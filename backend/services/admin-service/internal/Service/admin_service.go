@@ -24,3 +24,7 @@ func (service *AdminService) UpdateAdmin(id uint, admin *Models.Admin) error {
 func (service *AdminService) DeleteAdmin(id uint) error {
 	return service.Repo.DeleteAdmin(id)
 }
+
+func (service *AdminService) GetAllAdmins() ([]Models.Admin, error) {
+	return service.Repo.GetAllAdmins()
+}
