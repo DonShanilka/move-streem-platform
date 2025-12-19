@@ -25,7 +25,7 @@ func main() {
 	mux := http.NewServeMux()
 	Routes.RegisterAdminRoutes(mux, adminHandler)
 
-	log.Println("Genres Service running on :8080 🚀")
+	log.Println("Admin Service running on :8080 🚀")
 	err = http.ListenAndServe(":8080", Middleware.CorsMiddleware(mux))
 	if err != nil {
 		log.Fatal(err)

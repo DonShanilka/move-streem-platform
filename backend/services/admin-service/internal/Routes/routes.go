@@ -7,8 +7,8 @@ import (
 )
 
 func RegisterAdminRoutes(mux *http.ServeMux, handler *Handler.AdminHandler) {
-	mux.HandleFunc("/api/genre/creatGenres", handler.CreateAdmin)
-	mux.HandleFunc("/api/genre/getAllGenre", handler.)
-	mux.HandleFunc("/api/genre/updateGenre", handler.UpdateGenre)
-	mux.HandleFunc("/api/genre/deleteGenre", handler.DeleteGenre)
+	mux.HandleFunc("/api/admin/creatAdmin", handler.CreateAdmin)
+	mux.HandleFunc("/api/admin/getAllAdmins", handler.GetAllAdmins)
+	mux.HandleFunc("/api/admin/updateAdmin", handler.UpdateAdmin)
+	mux.HandleFunc("/api/admin/deleteAdmin", handler.DeleteAdmin)
 }

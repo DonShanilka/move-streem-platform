@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/DonShanilka/admin-service/internal/Models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -37,6 +38,11 @@ func InitDB() (*gorm.DB, error) {
 	)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.AutoMigrate(&Models.Admin{})
 	if err != nil {
 		return nil, err
 	}
