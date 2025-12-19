@@ -17,20 +17,20 @@ func NewGenerRepostry(db *gorm.DB) *GenerRepostry {
 	return &GenerRepostry{DB: db}
 }
 
-func (request *GenerRepostry) CreateGenre(genre *Models.Genre) error {
-	return request.DB.Create(genre).Error
+func (repo *GenerRepostry) CreateGenre(genre *Models.Genre) error {
+	return repo.DB.Create(genre).Error
 }
 
-func (request *GenerRepostry) UpdateGenre(id uint, genre *Models.Genre) error {
-	return request.DB.Model(&Models.Genre{}).Where("id =?", id).Updates(genre).Error
+func (repo *GenerRepostry) UpdateGenre(id uint, genre *Models.Genre) error {
+	return repo.DB.Model(&Models.Genre{}).Where("id =?", id).Updates(genre).Error
 }
 
-func (request *GenerRepostry) DeleteGenre(id uint) error {
-	return request.DB.Delete(&Models.Genre{}, id).Error
+func (repo *GenerRepostry) DeleteGenre(id uint) error {
+	return repo.DB.Delete(&Models.Genre{}, id).Error
 }
 
-func (request *GenerRepostry) GetAllGenres() ([]Models.Genre, error) {
+func (repo *GenerRepostry) GetAllGenres() ([]Models.Genre, error) {
 	var genres []Models.Genre
-	err := request.DB.Find(&genres).Error
+	err := repo.DB.Find(&genres).Error
 	return genres, err
 }
