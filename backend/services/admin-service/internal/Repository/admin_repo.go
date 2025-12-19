@@ -16,3 +16,7 @@ func NewAdminRepository(db *gorm.DB) *AdminRepository {
 func (repo *AdminRepository) CreateAdmin(admin *Models.Admin) error {
 	return repo.DB.Create(admin).Error
 }
+
+func (repo *AdminRepository) UpdateAdmin(admin *Models.Admin) error {
+	return repo.DB.Save(admin).Error
+}
