@@ -20,3 +20,7 @@ func (service *AdminService) CreateAdmin(admin *Models.Admin) error {
 func (service *AdminService) UpdateAdmin(id uint, admin *Models.Admin) error {
 	return service.Repo.UpdateAdmin(id, admin)
 }
+
+func (service *AdminService) DeleteAdmin(id uint) error {
+	return service.Repo.DeleteAdmin(id)
+}
