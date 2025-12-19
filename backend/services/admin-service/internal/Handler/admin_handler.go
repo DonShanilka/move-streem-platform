@@ -89,3 +89,15 @@ func (handler *AdminHandler) UpdateAdmin(writer http.ResponseWriter, request *ht
 	})
 
 }
+
+func (handler *AdminHandler) DeleteAdmin(writer http.ResponseWriter, request *http.Request) {
+	id, _ := strconv.Atoi(request.URL.Query().Get("id"))
+
+	if err := handler.Service.DeleteAdmin(uint(id)); err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(writer).Encode(map[string]string{
+		"message": "Admin deleted successfully",
+	})
+}
