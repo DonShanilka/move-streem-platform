@@ -1,30 +1,18 @@
 package Service
 
 import (
-	"github.com/DonShanilka/genres-service/internal/Models"
-	"github.com/DonShanilka/genres-service/internal/Repository"
+	"github.com/DonShanilka/admin-service/internal/Models"
+	"github.com/DonShanilka/admin-service/internal/Repository"
 )
 
-type GenreService struct {
-	Repo *Repository.GenerRepostry
+type AdminService struct {
+	Repo *Repository.AdminRepository
 }
 
-func NewGenreService(repo *Repository.GenerRepostry) *GenreService {
-	return &GenreService{Repo: repo}
+func NewAdminService(repo *Repository.AdminRepository) *AdminService {
+	return &AdminService{Repo: repo}
 }
 
-func (service *GenreService) CreateGenre(genre *Models.Genre) error {
-	return service.Repo.CreateGenre(genre)
-}
-
-func (service *GenreService) UpdateGenre(id uint, genre *Models.Genre) error {
-	return service.Repo.UpdateGenre(id, genre)
-}
-
-func (service *GenreService) DeleteGenre(id uint) error {
-	return service.Repo.DeleteGenre(id)
-}
-
-func (service *GenreService) GetAllGenres() ([]Models.Genre, error) {
-	return service.Repo.GetAllGenres()
+func (service *AdminService) CreateAdmin(admin *Models.Admin) error {
+	return service.Repo.CreateAdmin(admin)
 }
