@@ -1,4 +1,4 @@
-module github.com/DonShanilka/admin-service
+module github.com/DonShanilka/genres-service
 
 go 1.24.4
 
