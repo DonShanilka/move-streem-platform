@@ -6,9 +6,9 @@ import (
 	"github.com/DonShanilka/user-service/internal/Handler"
 )
 
-func RegisterAdminRoutes(mux *http.ServeMux, handler *Handler.AdminHandler) {
-	mux.HandleFunc("/api/admin/creatAdmin", handler.CreateAdmin)
-	mux.HandleFunc("/api/admin/getAllAdmins", handler.GetAllAdmins)
-	mux.HandleFunc("/api/admin/updateAdmin", handler.UpdateAdmin)
-	mux.HandleFunc("/api/admin/deleteAdmin", handler.DeleteAdmin)
+func RegisterUserRoutes(mux *http.ServeMux, handler *Handler.UserHandler) {
+	mux.HandleFunc("/api/user/creatUser", handler.CreateUser)
+	mux.HandleFunc("/api/user/getAllUsers", handler.GetAllUsers)
+	mux.HandleFunc("/api/user/updateUser", handler.UpdateUser)
+	mux.HandleFunc("/api/user/deleteUser", handler.DeleteUser)
 }

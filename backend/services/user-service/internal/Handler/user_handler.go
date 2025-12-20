@@ -32,10 +32,10 @@ func (handler *UserHandler) CreateUser(writer http.ResponseWriter, request *http
 	}
 
 	user := Models.User{
-		Name:     request.FormValue("name"),
-		Email:    request.FormValue("email"),
-		Password: request.FormValue("password"),
-		IsActive: request.FormValue("isActive") == "true",
+		Name:         request.FormValue("name"),
+		Email:        request.FormValue("email"),
+		PasswordHash: request.FormValue("password"),
+		IsActive:     request.FormValue("isActive") == "true",
 	}
 
 	if file, _, err := request.FormFile("profile_image"); err == nil {
@@ -69,11 +69,11 @@ func (handler *UserHandler) UpdateUser(writer http.ResponseWriter, request *http
 	}
 
 	user := Models.User{
-		ID:       uint(id),
-		Name:     request.FormValue("name"),
-		Email:    request.FormValue("email"),
-		Password: request.FormValue("password"),
-		IsActive: request.FormValue("isActive") == "true",
+		ID:           uint(id),
+		Name:         request.FormValue("name"),
+		Email:        request.FormValue("email"),
+		PasswordHash: request.FormValue("password"),
+		IsActive:     request.FormValue("isActive") == "true",
 	}
 
 	if file, _, err := request.FormFile("profile_image"); err == nil {

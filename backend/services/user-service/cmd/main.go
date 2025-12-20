@@ -23,7 +23,7 @@ func main() {
 	userHandler := Handler.NewUserHandler(userService)
 
 	mux := http.NewServeMux()
-	Routes.RegisterAdminRoutes(mux, userHandler)
+	Routes.RegisterUserRoutes(mux, userHandler)
 
 	log.Println("User Service running on :8080 🚀")
 	err = http.ListenAndServe(":8080", Middleware.CorsMiddleware(mux))
