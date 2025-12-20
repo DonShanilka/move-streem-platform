@@ -9,6 +9,7 @@ import (
 
 	"github.com/DonShanilka/user-service/internal/Models"
 	"github.com/DonShanilka/user-service/internal/Service"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserHandler struct {
@@ -32,11 +33,14 @@ func (handler *UserHandler) CreateUser(writer http.ResponseWriter, request *http
 	}
 
 	user := Models.User{
-		Name:         request.FormValue("name"),
-		Email:        request.FormValue("email"),
-		PasswordHash: request.FormValue("password"),
-		IsActive:     request.FormValue("isActive") == "true",
+		Name:  request.FormValue("name"),
+		Email: request.FormValue("email"),
+		//PasswordHash: request.FormValue("password"),
+		IsActive: request.FormValue("isActive") == "true",
 	}
+
+	hash, _ := bcrypt.GenerateFromPassword([]byte(user.PasswordHash), bcrypt.DefaultCost)
+	user.PasswordHash = string(hash)
 
 	if file, _, err := request.FormFile("profile_image"); err == nil {
 		user.ProfileImage, _ = io.ReadAll(file)
@@ -69,17 +73,20 @@ func (handler *UserHandler) UpdateUser(writer http.ResponseWriter, request *http
 	}
 
 	user := Models.User{
-		ID:           uint(id),
-		Name:         request.FormValue("name"),
-		Email:        request.FormValue("email"),
-		PasswordHash: request.FormValue("password"),
-		IsActive:     request.FormValue("isActive") == "true",
+		ID:    uint(id),
+		Name:  request.FormValue("name"),
+		Email: request.FormValue("email"),
+		//PasswordHash: request.FormValue("password"),
+		IsActive: request.FormValue("isActive") == "true",
 	}
 
 	if file, _, err := request.FormFile("profile_image"); err == nil {
 		user.ProfileImage, _ = io.ReadAll(file)
 		file.Close()
 	}
+
+	hash, _ := bcrypt.GenerateFromPassword([]byte(user.PasswordHash), bcrypt.DefaultCost)
+	user.PasswordHash = string(hash)
 
 	if err := handler.Service.UpdateUser(uint(id), &user); err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)

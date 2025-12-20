@@ -3,6 +3,7 @@ module github.com/DonShanilka/user-service
 go 1.24.4
 
 require (
+	golang.org/x/crypto v0.46.0
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.31.1
 )
