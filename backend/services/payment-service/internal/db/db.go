@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/DonShanilka/payment-service/internal/Models"
+	"backend/payment-service/internal/Models"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

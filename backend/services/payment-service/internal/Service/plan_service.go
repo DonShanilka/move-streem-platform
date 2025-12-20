@@ -13,18 +13,18 @@ func NewPlanService(repo *Repository.PlanRepostry) *PlanService {
 	return &PlanService{Repo: repo}
 }
 
-func (service *PlanService) CreateGenre(plan *Models.Plan) error {
+func (service *PlanService) CreatePlan(plan *Models.Plan) error {
 	return service.Repo.CreatePlan(plan)
 }
 
-func (service *PlanService) UpdateGenre(id uint, plan *Models.Plan) error {
+func (service *PlanService) UpdatePlan(id uint, plan *Models.Plan) error {
 	return service.Repo.UpdatePlan(id, plan)
 }
 
-func (service *PlanService) DeleteGenre(id uint) error {
+func (service *PlanService) DeletePlan(id uint) error {
 	return service.Repo.DeletePlan(id)
 }
 
-func (service *PlanService) GetAllGenres() ([]Models.Plan, error) {
+func (service *PlanService) GetAllPlan() ([]Models.Plan, error) {
 	return service.Repo.GetAllPlan()
 }

@@ -1,8 +1,13 @@
 package Routes
 
-//func RegisterUserRoutes(mux *http.ServeMux, handler *Handler.UserHandler) {
-//	mux.HandleFunc("/api/user/creatUser", handler.CreateUser)
-//	mux.HandleFunc("/api/user/getAllUsers", handler.GetAllUsers)
-//	mux.HandleFunc("/api/user/updateUser", handler.UpdateUser)
-//	mux.HandleFunc("/api/user/deleteUser", handler.DeleteUser)
-//}
+import (
+	"backend/payment-service/internal/Handler"
+	"net/http"
+)
+
+func RegisterPlanRoutes(mux *http.ServeMux, handler *Handler.PlanHandler) {
+	mux.HandleFunc("/api/plan/creatPlan", handler.CreatePlane)
+	mux.HandleFunc("/api/plan/getAllPlan", handler.GetAllPlan)
+	mux.HandleFunc("/api/plan/updatePlan", handler.UpdatePlan)
+	mux.HandleFunc("/api/plan/deletePlan", handler.DeletePlan)
+}
