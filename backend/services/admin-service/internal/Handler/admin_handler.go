@@ -9,6 +9,7 @@ import (
 
 	"github.com/DonShanilka/admin-service/internal/Models"
 	"github.com/DonShanilka/admin-service/internal/Service"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AdminHandler struct {
@@ -32,10 +33,13 @@ func (handler *AdminHandler) CreateAdmin(writer http.ResponseWriter, request *ht
 	}
 
 	admin := Models.Admin{
-		Name:     request.FormValue("name"),
-		Email:    request.FormValue("email"),
-		Password: request.FormValue("password"),
+		Name:  request.FormValue("name"),
+		Email: request.FormValue("email"),
+		//Password: request.FormValue("password"),
 	}
+
+	hash, _ := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+	admin.Password = string(hash)
 
 	if file, _, err := request.FormFile("profile_image"); err == nil {
 		admin.ProfileImage, _ = io.ReadAll(file)
@@ -68,11 +72,14 @@ func (handler *AdminHandler) UpdateAdmin(writer http.ResponseWriter, request *ht
 	}
 
 	admin := Models.Admin{
-		ID:       uint(id),
-		Name:     request.FormValue("name"),
-		Email:    request.FormValue("email"),
-		Password: request.FormValue("password"),
+		ID:    uint(id),
+		Name:  request.FormValue("name"),
+		Email: request.FormValue("email"),
+		//Password: request.FormValue("password"),
 	}
+
+	hash, _ := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+	admin.Password = string(hash)
 
 	if file, _, err := request.FormFile("profile_image"); err == nil {
 		admin.ProfileImage, _ = io.ReadAll(file)
