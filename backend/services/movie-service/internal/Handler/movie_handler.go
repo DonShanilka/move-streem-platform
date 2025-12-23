@@ -32,26 +32,27 @@ func (h *MovieHandler) CreateMovie(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	movie := Models.Movie{
-		Title:       r.FormValue("Title"),
-		Description: r.FormValue("Description"),
-		ReleaseYear: atoiSafe(r.FormValue("ReleaseYear")),
-		Language:    r.FormValue("Language"),
-		Duration:    atoiSafe(r.FormValue("Duration")),
-		Rating:      r.FormValue("Rating"),
-		AgeRating:   r.FormValue("AgeRating"),
-		Country:     r.FormValue("Country"),
+		Title:       r.FormValue("title"),
+		Description: r.FormValue("description"),
+		ReleaseYear: atoiSafe(r.FormValue("releaseYear")),
+		Language:    r.FormValue("language"),
+		Duration:    atoiSafe(r.FormValue("duration")),
+		Rating:      r.FormValue("rating"),
+		AgeRating:   r.FormValue("ageRating"),
+		Country:     r.FormValue("country"),
+		Genre:       r.FormValue("genre"),
 	}
 
 	// Read files
-	if file, _, _ := r.FormFile("Thumbnail"); file != nil {
+	if file, _, _ := r.FormFile("thumbnail"); file != nil {
 		movie.Thumbnail, _ = io.ReadAll(file)
 		file.Close()
 	}
-	if file, _, _ := r.FormFile("Banner"); file != nil {
+	if file, _, _ := r.FormFile("banner"); file != nil {
 		movie.Banner, _ = io.ReadAll(file)
 		file.Close()
 	}
-	if file, _, _ := r.FormFile("Trailer"); file != nil {
+	if file, _, _ := r.FormFile("trailer"); file != nil {
 		movie.Trailer, _ = io.ReadAll(file)
 		file.Close()
 	}
@@ -80,26 +81,10 @@ func (h *MovieHandler) UpdateMovie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ID
-	idStr := r.FormValue("Id")
+	idStr := r.FormValue("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		http.Error(w, "Invalid Id", http.StatusBadRequest)
-		return
-	}
-
-	// ✅ Convert ReleaseYear
-	releaseYearStr := r.FormValue("ReleaseYear")
-	releaseYear, err := strconv.Atoi(releaseYearStr)
-	if err != nil {
-		http.Error(w, "Invalid ReleaseYear", http.StatusBadRequest)
-		return
-	}
-
-	// ✅ Convert Duration
-	durationStr := r.FormValue("Duration")
-	duration, err := strconv.Atoi(durationStr)
-	if err != nil {
-		http.Error(w, "Invalid Duration", http.StatusBadRequest)
 		return
 	}
 
@@ -112,14 +97,28 @@ func (h *MovieHandler) UpdateMovie(w http.ResponseWriter, r *http.Request) {
 
 	movie := Models.Movie{
 		Id:          id,
-		Title:       r.FormValue("Title"),
-		Description: r.FormValue("Description"),
-		ReleaseYear: releaseYear, // ✅ int
-		Language:    r.FormValue("Language"),
-		Duration:    duration, // ✅ int
-		Rating:      r.FormValue("Rating"),
-		AgeRating:   r.FormValue("AgeRating"),
-		Country:     r.FormValue("Country"),
+		Title:       r.FormValue("title"),
+		Description: r.FormValue("description"),
+		ReleaseYear: atoiSafe(r.FormValue("releaseYear")),
+		Language:    r.FormValue("language"),
+		Duration:    atoiSafe(r.FormValue("duration")),
+		Rating:      r.FormValue("rating"),
+		AgeRating:   r.FormValue("ageRating"),
+		Country:     r.FormValue("country"),
+		Genre:       r.FormValue("genre"),
+	}
+
+	if file, _, _ := r.FormFile("thumbnail"); file != nil {
+		movie.Thumbnail, _ = io.ReadAll(file)
+		file.Close()
+	}
+	if file, _, _ := r.FormFile("banner"); file != nil {
+		movie.Banner, _ = io.ReadAll(file)
+		file.Close()
+	}
+	if file, _, _ := r.FormFile("trailer"); file != nil {
+		movie.Trailer, _ = io.ReadAll(file)
+		file.Close()
 	}
 
 	if err := h.Service.UpdateMovie(&movie, file, header.Filename); err != nil {

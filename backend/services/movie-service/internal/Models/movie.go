@@ -14,4 +14,5 @@ type Movie struct {
 	Banner      []byte `gorm:"type:longblob"`
 	Trailer     []byte `gorm:"type:longblob"`
 	MovieURL    string
+	Genre       string
 }

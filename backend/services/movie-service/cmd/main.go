@@ -17,7 +17,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	movieRepo := Repository.NewMovieRepository(database)
+	// Backblaze B2 Config
+	b2KeyID := "f9f45a6c989e"
+	b2AppKey := "00563942506fbf1481548bd202ea51e42ec0ce19b7"
+	b2BucketName := "movieStream"
+
+	movieRepo, err := Repository.NewMovieRepository(database, b2KeyID, b2AppKey, b2BucketName)
+	if err != nil {
+		log.Fatal("Failed to create Movie Repository", err)
+	}
 	movieService := services.NewMovieService(movieRepo)
 	movieHandler := Handler.NewMovieHandler(movieService)
 

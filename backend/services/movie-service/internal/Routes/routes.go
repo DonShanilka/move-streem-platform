@@ -11,4 +11,5 @@ func RegisterMovieRoutes(mux *http.ServeMux, h *Handler.MovieHandler) {
 	mux.HandleFunc("/api/movies/createMovie", h.CreateMovie)
 	mux.HandleFunc("/api/movies/updateMovie", h.UpdateMovie)
 	mux.HandleFunc("/api/movies/deleteMovie", h.DeleteMovie)
+	mux.HandleFunc("/api/movies/getMovieById", h.GetMovieById)
 }
