@@ -144,7 +144,6 @@ func (h *MovieHandler) DeleteMovie(w http.ResponseWriter, r *http.Request) {
 
 func (h *MovieHandler) GetAllMovies(w http.ResponseWriter, r *http.Request) {
 
-	// 🔥 IF "movie" QUERY EXISTS → STREAM VIDEO
 	videoURL := r.URL.Query().Get("movie")
 	if videoURL != "" {
 
@@ -154,7 +153,7 @@ func (h *MovieHandler) GetAllMovies(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Forward Range header (important for streaming)
+		// 🔥 Forward Range header
 		if rangeHeader := r.Header.Get("Range"); rangeHeader != "" {
 			req.Header.Set("Range", rangeHeader)
 		}
@@ -167,9 +166,15 @@ func (h *MovieHandler) GetAllMovies(w http.ResponseWriter, r *http.Request) {
 		}
 		defer resp.Body.Close()
 
-		// Copy headers
-		for k, v := range resp.Header {
-			w.Header()[k] = v
+		// 🔥 Copy headers (VERY IMPORTANT)
+		w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
+		w.Header().Set("Accept-Ranges", "bytes")
+
+		if resp.Header.Get("Content-Range") != "" {
+			w.Header().Set("Content-Range", resp.Header.Get("Content-Range"))
+		}
+		if resp.Header.Get("Content-Length") != "" {
+			w.Header().Set("Content-Length", resp.Header.Get("Content-Length"))
 		}
 
 		w.WriteHeader(resp.StatusCode)
@@ -177,7 +182,7 @@ func (h *MovieHandler) GetAllMovies(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 🔵 OTHERWISE → RETURN ALL MOVIES
+	// 🔵 Return movie list
 	movies, err := h.Service.GetAllMovies()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -187,7 +192,6 @@ func (h *MovieHandler) GetAllMovies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(movies)
 }
-
 
 func (h *MovieHandler) GetMovieById(w http.ResponseWriter, r *http.Request) {
 	idstr := r.URL.Query().Get("id")
@@ -211,5 +215,3 @@ func (h *MovieHandler) GetMovieById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	json.NewEncoder(w).Encode(movie)
 }
-
-
