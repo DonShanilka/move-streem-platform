@@ -17,9 +17,9 @@ func RegisterTvSeriesRoutes(mux *http.ServeMux, handler *Handler.TvSeriesHandler
 
 func RegisterEpisodeRoutes(mux *http.ServeMux, h *Handler.EpisodeHandler) {
 	// Episode routes
-	mux.HandleFunc("/api/episodes/create", h.CreateEpisode)
-	mux.HandleFunc("/api/episodes/update", h.UpdateEpisode)
-	mux.HandleFunc("/api/episodes/delete", h.DeleteEpisode)
-	mux.HandleFunc("/api/episodes/getAllEpisode", h.GetAllEpisodes)
-	mux.HandleFunc("/api/episodes/getEpisodeById", h.GetEpisodeByID)
+	mux.HandleFunc("/api/episode/createEpisode", h.CreateEpisode)
+	mux.HandleFunc("/api/episode/updateEpisode", h.UpdateEpisode)
+	mux.HandleFunc("/api/episode/deleteEpisode", h.DeleteEpisode)
+	mux.HandleFunc("/api/episode/getAllEpisode", h.GetAllEpisodes)
+	mux.HandleFunc("/api/episode/getEpisodeById", h.GetEpisodeByID)
 }
